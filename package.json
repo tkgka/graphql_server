@@ -1,0 +1,18 @@
+{
+  "name": "graphql_server",
+  "version": "1.0.0",
+  "main": "app.ts",
+  "license": "MIT",
+  "devDependencies": {
+    "apollo-server": "^3.5.0",
+    "dotenv": "^10.0.0",
+    "graphql-yoga": "^1.18.3",
+    "mongoose": "^5.13.3",
+    "typescript": "^4.5.2"
+  },
+  "scripts": {
+    "serve": "ts-node app.ts",
+    "watch": "tsc -w",
+    "start": "node dist/app.js"
+  }
+}
