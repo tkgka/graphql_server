@@ -1,18 +1,15 @@
 import mongoose from "mongoose"
 const { Schema } = mongoose;
 const contentSchema: any = new Schema({
-  ServerURL: {
+
+  username: {
     type: String,
     required: true,
     index: true
   },
-  Client: {
+  password: {
     type: String,
     required: true
-  },
-  UserAgentData: {
-    type: [String],
-    required: false
   },
   createdAt: {
     type: Date,
@@ -20,4 +17,4 @@ const contentSchema: any = new Schema({
   },
 });
 
-module.exports = mongoose.model('server_conn_counts', contentSchema);
+module.exports = mongoose.model('server_conn_count_accounts', contentSchema);
