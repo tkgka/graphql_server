@@ -1,5 +1,7 @@
 const Content = require('../../DB/contents');
 const Account = require('../../DB/account');
+import get_cache from "../../cache/get_data"
+import set_cache from "../../cache/set_data"
 import jwt from "jsonwebtoken";
 import fs from 'fs';
 import { startSession } from "mongoose";
@@ -14,7 +16,7 @@ const resolvers = {
                     ...args.contentInput
                 });
                 const payload = { 'user_id': account.username };
-                const find: string = await Account.find({ username: { $in: account.username } })
+                const find: string = await Account.find({ username: { $in: account.username }, password: { $in: account.password } });
                 console.log(find)
                 if (find.length > 0) {
                     const token = jwt.sign(payload, secret_key, { algorithm: 'RS256', expiresIn: '1h' });
@@ -88,17 +90,20 @@ const resolvers = {
                 })
                 const result: string[] = [];
                 result.push(await content.save({ session }))
-                await session.commitTransaction();
+                await get_cache(content.Client).then(async (val) => {
+                    if (val == "") {
+                        await session.commitTransaction()
+                        set_cache(content.Client, new Date()).then((val) => { console.log("cached", val) })
+                    } else {
+                        console.log(val)
+                    }
+                })
                 return result;
-
             } catch (err) {
-
                 await session.abortTransaction();
-                console.log(err);
                 throw err;
-
-            } finally {
-                await session.endSession();
+            } finally{
+                await session.endSession();   
             }
         },
     },
