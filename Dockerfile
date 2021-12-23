@@ -10,7 +10,9 @@ RUN apt-get update
 RUN apt-get install -y npm
 RUN npm install -g n
 RUN n latest
-
+RUN apt-get install -y redis-server
+RUN echo "maxmemory 1g" >> /etc/redis/redis.conf
+RUN echo "maxmemory-policy allkeys-lru" >> /etc/redis/redis.conf
 RUN npm install -g ts-node
 RUN apt install -y yarn
 RUN apt install -y --no-install-recommends yarn
