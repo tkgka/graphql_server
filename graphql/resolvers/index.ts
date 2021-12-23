@@ -81,19 +81,21 @@ const resolvers = {
         },
     },
     Mutation: {
-        async createContent(_, args) {
+        async createContent(_, args, { req }) {
+            const user_IP = req.headers['x-forwarded-for'] || req.connection.remoteAddress
             const session = await startSession();
             try {
                 session.startTransaction();
                 const content = new Content({
                     ...args.contentInput
                 })
+                content.Client = user_IP
                 const result: string[] = [];
                 result.push(await content.save({ session }))
-                await get_cache(content.Client).then(async (val) => {
+                await get_cache(user_IP).then(async (val) => {
                     if (val == "") {
                         await session.commitTransaction()
-                        set_cache(content.Client, new Date()).then((val) => { console.log("cached", val) })
+                        set_cache(user_IP, new Date()).then((val) => { console.log("cached", val) })
                     } else {
                         console.log(val)
                     }
@@ -102,8 +104,8 @@ const resolvers = {
             } catch (err) {
                 await session.abortTransaction();
                 throw err;
-            } finally{
-                await session.endSession();   
+            } finally {
+                await session.endSession();
             }
         },
     },
