@@ -82,7 +82,7 @@ const resolvers = {
     },
     Mutation: {
         async createContent(_, args, { req }) {
-            const user_IP = req.headers['x-forwarded-for'] || req.connection.remoteAddress
+            const user_IP = req.headers['x-real-ip'] || req.ip || req.connection.remoteAddress || req.headers['x-forwarded-for'];
             const session = await startSession();
             try {
                 session.startTransaction();
