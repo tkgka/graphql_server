@@ -5,6 +5,7 @@ type Query {
     getContents: [Content]!
     findContent(contentInput: ContentInput): [Content]!
     find_24h_Content(contentInput: ContentInput): [Content]!
+    createContent: [Content]!
 }
 
 type Mutation {
