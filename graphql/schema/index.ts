@@ -5,7 +5,7 @@ type Query {
     getContents: [Content]!
     findContent(contentInput: ContentInput): [Content]!
     find_24h_Content(contentInput: ContentInput): [Content]!
-    createContent: [Content]!
+    createContent(contentInput: ContentInput): [Content]!
 }
 
 type Mutation {
@@ -17,10 +17,14 @@ type Content {
     createdAt: String
     UserAgentData: [String]
   }
+input Brand {
+    brand: String
+    version: String
+}
 
   input ContentInput{
     ServerURL: String
-    UserAgentData: [String]
+    UserAgentData: [Brand]
     Client: String
   }
   input UserInput{

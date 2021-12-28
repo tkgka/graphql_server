@@ -11,7 +11,7 @@ const contentSchema: any = new Schema({
     required: true
   },
   UserAgentData: {
-    type: [String],
+    type: [Object],
     required: false
   },
   createdAt: {
