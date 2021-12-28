@@ -90,14 +90,13 @@ const resolvers = {
                     ServerURL: req.headers['referer'],
                 })
                 content.UserAgentData.push(_args.contentInput.UserAgentData)
-                
+
                 result.push(await content.save({ session }))
                 await get_cache(user_IP).then(async (val) => {
                     if (val == "") {
                         await session.commitTransaction()
                         set_cache(user_IP, new Date()).then((val) => { console.log("cached", val) })
                     } else {
-                        await session.commitTransaction()
                         console.log(val)
                     }
                 })
