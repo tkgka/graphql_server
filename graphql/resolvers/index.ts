@@ -80,22 +80,23 @@ const resolvers = {
             }
         },
         async createContent(_, _args, { req }) {
-            const user_IP = req.headers['x-real-ip'] || req.ip || req.connection.remoteAddress || req.headers['x-forwarded-for'];
+            const user_ip = req.headers['x-real-ip'] || req.ip || req.connection.remoteAddress || req.headers['x-forwarded-for'];
+            const user_data = `${user_ip}_${req.headers['referer']}`;
             const session = await startSession();
             try {
                 session.startTransaction();
                 const result: string[] = [];
                 const content = new Content({
-                    Client: user_IP,
+                    Client: user_data,
                     ServerURL: req.headers['referer'],
                 })
                 content.UserAgentData.push(_args.contentInput.UserAgentData)
 
                 result.push(await content.save({ session }))
-                await get_cache(user_IP).then(async (val) => {
+                await get_cache(user_data).then(async (val) => {
                     if (val == "") {
                         await session.commitTransaction()
-                        set_cache(user_IP, new Date()).then((val) => { console.log("cached", val) })
+                        set_cache(user_data, new Date()).then((val) => { console.log("cached", val) })
                     } else {
                         console.log(val)
                     }
@@ -111,20 +112,21 @@ const resolvers = {
     },
     Mutation: {
         async createContent(_, args, { req }) {
-            const user_IP = req.headers['x-real-ip'] || req.ip || req.connection.remoteAddress || req.headers['x-forwarded-for'];
+            const user_ip = req.headers['x-real-ip'] || req.ip || req.connection.remoteAddress || req.headers['x-forwarded-for']
+            const user_data = `${user_ip}_${req.headers['referer']}`;
             const session = await startSession();
             try {
                 session.startTransaction();
                 const content = new Content({
                     ...args.contentInput
                 })
-                content.Client = user_IP
+                content.Client = user_data
                 const result: string[] = [];
                 result.push(await content.save({ session }))
-                await get_cache(user_IP).then(async (val) => {
+                await get_cache(user_data).then(async (val) => {
                     if (val == "") {
                         await session.commitTransaction()
-                        set_cache(user_IP, new Date()).then((val) => { console.log("cached", val) })
+                        set_cache(user_data, new Date()).then((val) => { console.log("cached", val) })
                     } else {
                         console.log(val)
                     }
