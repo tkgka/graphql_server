@@ -19,5 +19,7 @@ RUN apt install -y yarn
 RUN apt install -y --no-install-recommends yarn
 RUN git clone "https://github.com/tkgka/graphql_server" /home
 RUN yarn --cwd ./home/ install
-#  .env, redis server 정보 추가 필요
+# RUN ssh-keygen -t rsa -b 4096 -m PEM -f /home/ssh/jwtRS256.key
+# RUN openssl rsa -in /home/ssh/jwtRS256.key -pubout -outform PEM -out /home/ssh/jwtRS256.key.pub
+
 CMD  yarn --cwd ./home/ serve
