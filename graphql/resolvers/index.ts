@@ -89,9 +89,11 @@ const resolvers = {
                 const content = new Content({
                     Client: user_data,
                     ServerURL: req.headers['referer'],
+                    platform: _args.contentInput.platform,
+                    mobile: _args.contentInput.mobile,
+                    brands:_args.contentInput.brands
                 })
-                content.UserAgentData.push(_args.contentInput.UserAgentData)
-
+                // content.brands.push(_args.contentInput.brands)
                 result.push(await content.save({ session }))
                 await get_cache(user_data).then(async (val) => {
                     if (val == "") {

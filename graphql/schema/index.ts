@@ -24,7 +24,9 @@ input Brand {
 
   input ContentInput{
     ServerURL: String
-    UserAgentData: [Brand]
+    brands: [Brand]
+    mobile: Boolean
+    platform: String
     Client: String
   }
   input UserInput{

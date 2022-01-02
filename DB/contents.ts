@@ -10,8 +10,16 @@ const contentSchema: any = new Schema({
     type: String,
     required: true
   },
-  UserAgentData: {
+  brands: {
     type: [Object],
+    required: false
+  },
+  mobile: {
+    type: Boolean,
+    required: false
+  },
+  platform: {
+    type: String,
     required: false
   },
   createdAt: {
