@@ -87,7 +87,7 @@ const resolvers = {
                 session.startTransaction();
                 const result: string[] = [];
                 const content = new Content({
-                    Client: user_data,
+                    Client: user_ip,
                     ServerURL: req.headers['referer'],
                     platform: _args.contentInput.platform,
                     mobile: _args.contentInput.mobile,
